@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -18,7 +18,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="Features\Authorizations\Constants\" />
+	  <Folder Include="Features\Authorizations\Models\" />
+	  <Folder Include="Features\Authorizations\Queries\" />
+	  <Folder Include="Features\GithubAddresses\Constants\" />
 	  <Folder Include="Features\ProgrammingLanguages\Constants\" />
+	  <Folder Include="Features\Technologies\Constants\" />
 	</ItemGroup>
 
 </Project>

@@ -7,7 +7,6 @@ namespace Kodlama.io.Devs.Application.Features.ProgrammingLanguages.Commands.Upd
     {
         public UpdateProgrammingLanguageCommandValidator()
         {
-            RuleFor(c => c.Id).NotEmpty();
             RuleFor(c => c.Name).NotEmpty();
             RuleFor(c => c.Name).MinimumLength(1);
         }
