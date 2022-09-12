@@ -14,7 +14,6 @@ namespace Kodlama.io.Devs.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class GithubAddressesController : BaseController
     {
         [HttpPost("add")]
@@ -36,7 +35,6 @@ namespace Kodlama.io.Devs.WebAPI.Controllers
             return Ok(result);
         }
         [HttpGet]
-        [AllowAnonymous]
         public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest)
         {
             GetListGithubAddressQuery getListGithubAddressQuery = new() { PageRequest = pageRequest };
@@ -44,7 +42,6 @@ namespace Kodlama.io.Devs.WebAPI.Controllers
             return Ok(result);
         }
         [HttpGet("{UserId}")]
-        [AllowAnonymous]
         public async Task<IActionResult> GetById([FromRoute] GetByUserIdGithubAddressQuery getByUserIdGithubAddressQuery)
         {
             GithubAddressGetByUserIdDto githubAddressGetByUserIdDto = await Mediator.Send(getByUserIdGithubAddressQuery);
