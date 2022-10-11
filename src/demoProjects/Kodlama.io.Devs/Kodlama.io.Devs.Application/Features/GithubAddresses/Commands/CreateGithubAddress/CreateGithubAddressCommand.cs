@@ -20,27 +20,23 @@ namespace Kodlama.io.Devs.Application.Features.GithubAddresses.Commands.CreateGi
         public int? UserId { get; set; }
         public string GithubUrl { get; set; }
 
-        public string[] Roles => new string[] { "Admin", "User" };
+        public string[] Roles => new string[] { "Admin", "GithubAdd" };
 
         public class CreateGithubAddressCommandHandler : IRequestHandler<CreateGithubAddressCommand, CreatedGithubAddressDto>
         {
             private readonly IGithubAddressRepository _githubAddressRepository;
             private readonly IMapper _mapper;
             private readonly GithubAddressBusinessRules _githubAddressBusinessRules;
-            private readonly IHttpContextAccessor _httpContextAccessor;
 
-            public CreateGithubAddressCommandHandler(IGithubAddressRepository githubAddressRepository, IMapper mapper, GithubAddressBusinessRules githubAddressBusinessRules, IHttpContextAccessor httpContextAccessor)
+            public CreateGithubAddressCommandHandler(IGithubAddressRepository githubAddressRepository, IMapper mapper, GithubAddressBusinessRules githubAddressBusinessRules)
             {
                 _githubAddressRepository = githubAddressRepository;
                 _mapper = mapper;
                 _githubAddressBusinessRules = githubAddressBusinessRules;
-                _httpContextAccessor = httpContextAccessor;
             }
 
             public async Task<CreatedGithubAddressDto> Handle(CreateGithubAddressCommand request, CancellationToken cancellationToken)
-            {
-                if(!_httpContextAccessor.HttpContext.User.IsInRole("Admin"))
-                    request.UserId= int.Parse(_httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
+            {                
                 await _githubAddressBusinessRules.GithubAddressCanNotBeDuplicatedWhenInserted(request.GithubUrl);
                 await _githubAddressBusinessRules.GithubAddressUserCanNotBeDuplicatedWhenInserted(request.UserId);
                 

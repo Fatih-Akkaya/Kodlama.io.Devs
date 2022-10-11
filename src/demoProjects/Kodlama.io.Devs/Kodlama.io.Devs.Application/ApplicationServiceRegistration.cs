@@ -1,12 +1,15 @@
 ﻿using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Validation;
+using Core.Mailing;
+using Core.Mailing.MailKitImplementations;
 using Core.Security.JWT;
 using FluentValidation;
-using Kodlama.io.Devs.Application.Features.Authorizations.Rules;
+using Kodlama.io.Devs.Application.Features.Auths.Rules;
 using Kodlama.io.Devs.Application.Features.GithubAddresses.Rules;
 using Kodlama.io.Devs.Application.Features.ProgrammingLanguages.Rules;
 using Kodlama.io.Devs.Application.Features.Technologies.Rules;
-using Kodlama.io.Devs.Application.Services.Authorizations;
+using Kodlama.io.Devs.Application.Services.AuthService;
+using Kodlama.io.Devs.Application.Services.UserService;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,20 +27,19 @@ namespace Kodlama.io.Devs.Application
 
             services.AddScoped<ProgrammingLanguageBusinessRules>();
             services.AddScoped<TechnologyBusinessRules>();
-            services.AddScoped<AuthorizationBusinessRules>();
+            services.AddScoped<AuthBusinessRules>();
             services.AddScoped<GithubAddressBusinessRules>();
 
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-            
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehavior<,>));
             //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CachingBehavior<,>));
             //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CacheRemovingBehavior<,>));
             //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehavior<,>));
-            services.AddScoped<IAuthorizationService, AuthorizationManager>();
-            services.AddTransient<ITokenHelper, JwtHelper>();
-
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            
+            services.AddScoped<IAuthService, AuthManager>();
+            services.AddSingleton<IMailService, MailKitMailService>();
+            services.AddScoped<IUserService, UserManager>();
 
             return services;
 

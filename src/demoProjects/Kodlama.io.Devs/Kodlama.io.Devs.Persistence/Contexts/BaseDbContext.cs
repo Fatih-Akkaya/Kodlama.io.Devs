@@ -19,6 +19,7 @@ namespace Kodlama.io.Devs.Persistence.Contexts
         public DbSet<User> Users { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<GithubAddress> GithubAddresses { get; set; }
         public BaseDbContext(DbContextOptions dbContextOptions, IConfiguration configuration) : base(dbContextOptions)
         {

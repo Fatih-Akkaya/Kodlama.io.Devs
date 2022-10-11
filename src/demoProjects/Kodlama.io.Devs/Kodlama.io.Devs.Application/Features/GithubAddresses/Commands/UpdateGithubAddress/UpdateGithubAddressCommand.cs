@@ -21,27 +21,22 @@ namespace Kodlama.io.Devs.Application.Features.GithubAddresses.Commands.UpdateGi
         public int? UserId { get; set; }
         public string GithubUrl { get; set; }
 
-        public string[] Roles => new string[] { "Admin", "User" };
+        public string[] Roles => new string[] { "Admin", "GithubUpdate" };
         public class UpdateGithubAddressCommandHandler : IRequestHandler<UpdateGithubAddressCommand, UpdatedGithubAddressDto>
         {
             private readonly IGithubAddressRepository _githubAddressRepository;
             private readonly IMapper _mapper;
-            private readonly GithubAddressBusinessRules _githubAddressBusinessRules;
-            private readonly IHttpContextAccessor _httpContextAccessor;
+            private readonly GithubAddressBusinessRules _githubAddressBusinessRules;            
 
-            public UpdateGithubAddressCommandHandler(IGithubAddressRepository githubAddressRepository, IMapper mapper, GithubAddressBusinessRules githubAddressBusinessRules, IHttpContextAccessor httpContextAccessor)
+            public UpdateGithubAddressCommandHandler(IGithubAddressRepository githubAddressRepository, IMapper mapper, GithubAddressBusinessRules githubAddressBusinessRules)
             {
                 _githubAddressRepository = githubAddressRepository;
                 _mapper = mapper;
                 _githubAddressBusinessRules = githubAddressBusinessRules;
-                _httpContextAccessor = httpContextAccessor;
             }
 
             public async Task<UpdatedGithubAddressDto> Handle(UpdateGithubAddressCommand request, CancellationToken cancellationToken)
             {
-                if (!_httpContextAccessor.HttpContext.User.IsInRole("Admin") &&
-                    request.UserId != int.Parse(_httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value))
-                    _githubAddressBusinessRules.GithubAddresNotMacthedRequestUser();
                 GithubAddress? githubAddress = await _githubAddressRepository.GetAsync(b => b.Id == request.Id);
                 _githubAddressBusinessRules.GithubAddressShouldExistWhenRequested(githubAddress);
                 await _githubAddressBusinessRules.GithubAddressCanNotBeDuplicatedWhenInserted(request.GithubUrl);

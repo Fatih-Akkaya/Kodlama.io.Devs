@@ -1,5 +1,5 @@
 ﻿using Core.Security.JWT;
-using Kodlama.io.Devs.Application.Services.Authorizations;
+using Kodlama.io.Devs.Application.Services.AuthService;
 using Kodlama.io.Devs.Application.Services.Repositories;
 using Kodlama.io.Devs.Persistence.Contexts;
 using Kodlama.io.Devs.Persistence.Repositories;
@@ -23,8 +23,11 @@ namespace Kodlama.io.Devs.Persistence
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserOperationClaimRepository, UserOperationClaimRepository>();
             services.AddScoped<IOperationClaimRepository, OperationClaimRepository>();
+            services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             services.AddScoped<IGithubAddressRepository, GithubAddressRepository>();
-            
+            services.AddScoped<IEmailAuthenticatorRepository, EmailAuthenticatorRepository>();
+            services.AddScoped<IOtpAuthenticatorRepository, OtpAuthenticatorRepository>();
+
 
             return services;
         }

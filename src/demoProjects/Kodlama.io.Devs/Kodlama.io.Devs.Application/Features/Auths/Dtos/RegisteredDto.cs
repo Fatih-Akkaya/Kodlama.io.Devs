@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kodlama.io.Devs.Application.Features.Authorizations.Dtos
+namespace Kodlama.io.Devs.Application.Features.Auths.Dtos
 {
-    public class RegisteredDto
+    public class RegisteredDto : RefreshedTokensDto
     {
-        public AccessToken AccessToken { get; set; }
+        
     }
 }

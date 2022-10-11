@@ -21,28 +21,22 @@ namespace Kodlama.io.Devs.Application.Features.GithubAddresses.Commands.DeleteGi
         public int? UserId { get; set; }
         public string GithubUrl { get; set; }
 
-        public string[] Roles => new string[] { "Admin", "User" };
+        public string[] Roles => new string[] { "Admin", "GithubDelete" };
         public class DeleteGithubAddressCommandHandler : IRequestHandler<DeleteGithubAddressCommand, DeletedGithubAddressDto>
         {
             private readonly IGithubAddressRepository _githubAddressRepository;
             private readonly IMapper _mapper;
             private readonly GithubAddressBusinessRules _githubAddressBusinessRules;
-            private readonly IHttpContextAccessor _httpContextAccessor;
 
-            public DeleteGithubAddressCommandHandler(IGithubAddressRepository githubAddressRepository, IMapper mapper, GithubAddressBusinessRules githubAddressBusinessRules, IHttpContextAccessor httpContextAccessor)
+            public DeleteGithubAddressCommandHandler(IGithubAddressRepository githubAddressRepository, IMapper mapper, GithubAddressBusinessRules githubAddressBusinessRules)
             {
                 _githubAddressRepository = githubAddressRepository;
                 _mapper = mapper;
                 _githubAddressBusinessRules = githubAddressBusinessRules;
-                _httpContextAccessor = httpContextAccessor;
             }
 
             public async Task<DeletedGithubAddressDto> Handle(DeleteGithubAddressCommand request, CancellationToken cancellationToken)
-            {
-                if (!_httpContextAccessor.HttpContext.User.IsInRole("Admin") &&
-                    request.UserId != int.Parse(_httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value))
-                    _githubAddressBusinessRules.GithubAddresNotMacthedRequestUser();
-                
+            {                                
                 GithubAddress? githubAddress = await _githubAddressRepository.GetAsync(b => b.Id == request.Id && b.UserId == request.UserId);
                 _githubAddressBusinessRules.GithubAddressShouldExistWhenRequested(githubAddress);
                 
