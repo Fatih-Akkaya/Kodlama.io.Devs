@@ -6,8 +6,10 @@ using Core.Security.JWT;
 using FluentValidation;
 using Kodlama.io.Devs.Application.Features.Auths.Rules;
 using Kodlama.io.Devs.Application.Features.GithubAddresses.Rules;
+using Kodlama.io.Devs.Application.Features.OperationClaims.Rules;
 using Kodlama.io.Devs.Application.Features.ProgrammingLanguages.Rules;
 using Kodlama.io.Devs.Application.Features.Technologies.Rules;
+using Kodlama.io.Devs.Application.Features.UserOperationClaims.Rules;
 using Kodlama.io.Devs.Application.Services.AuthService;
 using Kodlama.io.Devs.Application.Services.UserService;
 using MediatR;
@@ -28,6 +30,8 @@ namespace Kodlama.io.Devs.Application
             services.AddScoped<ProgrammingLanguageBusinessRules>();
             services.AddScoped<TechnologyBusinessRules>();
             services.AddScoped<AuthBusinessRules>();
+            services.AddScoped<UserOperationClaimBusinessRules>();
+            services.AddScoped<OperationClaimBusinessRules>();
             services.AddScoped<GithubAddressBusinessRules>();
 
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());

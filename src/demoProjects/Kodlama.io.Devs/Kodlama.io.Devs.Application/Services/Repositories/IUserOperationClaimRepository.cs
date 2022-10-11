@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Kodlama.io.Devs.Application.Services.Repositories
 {
-    public interface IUserOperationClaimRepository : IAsyncRepository<UserOperationClaim>
+    public interface IUserOperationClaimRepository : IAsyncRepository<UserOperationClaim>, IRepository<UserOperationClaim>
     {
     }
 }
